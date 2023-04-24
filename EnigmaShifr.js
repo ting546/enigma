@@ -1,4 +1,3 @@
-console.log("====================== EnigmaShifr ======================");
 const abs = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const cur_rotors = ["ZYXWVUTSRQPONMLKJIHGFEDCBA", "SRQPONMCBALKJIHGFEZYXWVUTD"];
 const reflector = {
@@ -73,25 +72,12 @@ function enigmaShifr(str) {
   return shifr;
 }
 
-const mainShifr = enigmaShifr(
-  "HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO"
-);
-
-console.log(enigmaShifr(mainShifr));
-
 function rotorMove(str) {
   const arr = str.split("");
   const last = arr.splice(str.length - 1, 1);
   arr.unshift(last[0]);
   return arr.join("");
 }
-console.log(
-  "Зашифровано с 2 роторами и рефлектором:",
-  mainShifr,
-  "Слово HELLO"
-);
-
-console.log("====================== EnigmaShifr ======================");
 
 const inp = document.querySelector("#input");
 const encode = document.querySelector("#encode");
