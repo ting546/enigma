@@ -1,8 +1,29 @@
 const abs = "АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
 const cur_rotors = [
   "БРСЬЭВГДЕЖЗИЙКЛМТУФХЦЧШЩЪЫАНОПЮЯ",
-  "АБВГДЬИЙЖЗТУФХЦЧКЛМНОПРЕШЩЪЫСЭЮЯ",
+  "ЬИЙЖЗТУФХЦЧКЛМНАБВГДОПРЕШЮЯЩЪЫСЭ",
+  "ШЩЪЬИЙЖЗТУФХЮЯЦЧКЛЫСЭМНАБВГДОПРЕ",
+  "ЯТУФХЦЧКЛМНАЗПРЕШЩЪЬИЙЖЫСЭЮБВГДО",
+  "ЦЫСЭЮЯХБВГДАЬИЙОПРЕШЧКЛМНЖЗТУФЩЪ",
 ];
+
+let arr = [];
+function forRotors() {
+  if (arr.at(-1) === abs.length) {
+    arr[arr.length - 1] = 0;
+  }
+  for (let index = 0; index < arr.length; index++) {
+    if (arr[index] === abs.length) {
+      arr[index] = 0;
+      arr[index + 1] += 1;
+      return index + 1;
+    }
+  }
+
+  arr[0] += 1;
+  return 0;
+}
+
 const reflector = {
   А: "В",
   Б: "Г",
@@ -37,13 +58,16 @@ const reflector = {
   Ю: "Ь",
   Я: "Д",
 };
-
+let cstr = "";
 function enigmaShifr(str) {
   let shifr = "";
-  let rtCount = 0;
-  let c = 0;
   let rotors = [...cur_rotors];
+
+  for (let i = 0; i < cur_rotors.length; i++) {
+    arr.push(0);
+  }
   for (let i = 0; i < str.length; i++) {
+    const rotorPos = forRotors();
     const a = str[i];
     let roterVal = a;
     if (a === " ") {
@@ -62,22 +86,14 @@ function enigmaShifr(str) {
       const refStr = rotor[abs.indexOf(roter2Val)];
       roter2Val = refStr;
     }
+    cstr += rotorPos;
 
     shifr += roter2Val;
-    c += 1;
-    if (c === 27) {
-      if (rtCount === rotors.length - 1) {
-        rtCount -= 1;
-      } else {
-        rtCount += 1;
-      }
-      rotors[rtCount] = rotorMove(rotors[rtCount]);
-      rtCount = 0;
-      c = 0;
-    } else {
-      rotors[rtCount] = rotorMove(rotors[rtCount]);
-    }
+
+    rotors[rotorPos] = rotorMove(rotors[rotorPos]);
   }
+
+  arr = [];
   return shifr;
 }
 
@@ -109,8 +125,6 @@ copyBtn.addEventListener("click", () => {
 encode.addEventListener("click", (e) => {
   e.preventDefault();
   resultBlock.classList.remove("d-none");
-
-  console.log(!/["A-Z"]/.test(inp.value.toUpperCase()));
 
   if (!/["A-Z"]/.test(inp.value.toUpperCase())) {
     error.classList.add("d-none");
